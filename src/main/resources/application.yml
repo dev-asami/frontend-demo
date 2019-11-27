@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: frontend-demo
+
+server:
+  servlet:
+    context-path: /technology-preview
