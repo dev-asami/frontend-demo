@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
   entry: './src/main/frontend/credit-tp.js',
   output: {
     filename: 'credit-tp.js',
