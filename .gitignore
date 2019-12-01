@@ -31,8 +31,8 @@ build/
 .vscode/
 
 ### frontend-maven-plugin ###
-/node/
+/frontend/node/
 
 ### npm ###
-node_modules/
+/frontend/node_modules/
 

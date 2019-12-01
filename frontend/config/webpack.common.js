@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/main/frontend/credit-tp.js',
+  entry: path.resolve(__dirname, '../src/credit-tp.js'),
   output: {
     filename: 'credit-tp.js',
-    path: path.join(__dirname, 'target/classes/static/js')
+    path: path.resolve(__dirname, '../../target/classes/static/js')
   },
   module: {
     rules: [

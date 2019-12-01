@@ -71,6 +71,7 @@
 				<version>1.8.0</version>
 				<configuration>
 					<nodeVersion>v12.13.1</nodeVersion>
+					<workingDirectory>frontend</workingDirectory>
 				</configuration>
 				<executions>
 					<execution>
