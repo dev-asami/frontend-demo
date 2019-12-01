@@ -33,3 +33,6 @@ build/
 ### frontend-maven-plugin ###
 /node/
 
+### npm ###
+node_modules/
+
