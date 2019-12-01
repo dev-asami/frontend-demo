@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/tmiyajima-sunarch/frontend-demo#readme",
   "devDependencies": {
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   }

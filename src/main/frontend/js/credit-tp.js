@@ -1,3 +1,6 @@
+// デフォルトのスタイル指定を読み込む
+import '../css/credit-tp.css';
+
 (function() {
 
 	const template = document.getElementById("sunarch-credit");
