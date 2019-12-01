@@ -23,6 +23,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "cleave.js": "^1.5.3"
+    "cleave.js": "^1.5.3",
+    "es6-promise": "^4.2.8"
   }
 }

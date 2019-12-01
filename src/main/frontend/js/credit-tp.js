@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Cleave from 'cleave.js';
 
 // デフォルトのスタイル指定を読み込む
