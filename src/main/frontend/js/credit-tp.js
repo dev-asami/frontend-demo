@@ -1,3 +1,5 @@
+import Cleave from 'cleave.js';
+
 // デフォルトのスタイル指定を読み込む
 import '../css/credit-tp.css';
 
