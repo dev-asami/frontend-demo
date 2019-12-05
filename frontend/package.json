@@ -1,0 +1,32 @@
+{
+  "name": "frontend-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config ./config/webpack.dev.js",
+    "build:watch": "webpack --watch --config ./config/webpack.dev.js",
+    "build:prod": "webpack --config ./config/webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmiyajima-sunarch/frontend-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmiyajima-sunarch/frontend-demo/issues"
+  },
+  "homepage": "https://github.com/tmiyajima-sunarch/frontend-demo#readme",
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "cleave.js": "^1.5.3",
+    "es6-promise": "^4.2.8"
+  }
+}

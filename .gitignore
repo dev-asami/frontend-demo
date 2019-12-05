@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### frontend-maven-plugin ###
+/frontend/node/
+
+### npm ###
+/frontend/node_modules/
+

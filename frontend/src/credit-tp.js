@@ -1,3 +1,9 @@
+import 'es6-promise/auto';
+import Cleave from 'cleave.js';
+
+// デフォルトのスタイル指定を読み込む
+import './credit-tp.css';
+
 (function() {
 
 	const template = document.getElementById("sunarch-credit");

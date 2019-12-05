@@ -71,6 +71,7 @@
 				<version>1.8.0</version>
 				<configuration>
 					<nodeVersion>v12.13.1</nodeVersion>
+					<workingDirectory>frontend</workingDirectory>
 				</configuration>
 				<executions>
 					<execution>
@@ -94,7 +95,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>run build</arguments>
+							<arguments>run build:prod</arguments>
 						</configuration>
 					</execution>
 				</executions>
