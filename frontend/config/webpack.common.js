@@ -12,6 +12,16 @@ module.exports = {
         test: /\.css$/i,
         // style-loaderを使って、読み込んだcssを自動で<style>タグとして読み込むようにする
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       }
     ]
   }

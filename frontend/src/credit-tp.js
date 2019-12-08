@@ -1,5 +1,8 @@
 import 'es6-promise/auto';
+import 'whatwg-fetch';
+import 'custom-event-polyfill';
 import Cleave from 'cleave.js';
+
 
 // デフォルトのスタイル指定を読み込む
 import './credit-tp.css';
@@ -125,10 +128,7 @@ import './credit-tp.css';
 				console.log("OK: " + JSON.stringify(myJson));
 				// event
 				var event = new CustomEvent("pending", {detail: {
-						processing_time: myJson.processing_time,
-						image_b64: myJson.image_b64,
-						image_token: myJson.image_token,
-						image_createtime: myJson.image_createtime
+						processing_time: myJson.processing_time
 					}});
 				template.dispatchEvent(event);
 			}else{
