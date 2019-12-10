@@ -1,11 +1,13 @@
 import 'es6-promise/auto';
-import 'whatwg-fetch';
 import 'custom-event-polyfill';
 import Cleave from 'cleave.js';
 
 
 // デフォルトのスタイル指定を読み込む
 import './credit-tp.css';
+
+// API呼び出し用関数
+import callApi from './credit-tp-api';
 
 export default function render() {
 
@@ -106,14 +108,7 @@ export default function render() {
 			"primary_account_number":pan,
 			"expiration_date":expdate
 		};
-		fetch(baseUrl + "/payment", {
-			method: "POST",
-			redirect: "error",
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(req)
-		})
+		callApi(`${baseUrl}/payment`, req)
 		.then(function(response) {
 			return response.json();
 		})
