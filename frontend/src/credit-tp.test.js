@@ -1,4 +1,8 @@
+import callApi from './credit-tp-api';
 import render from './credit-tp';
+
+// credit-tp-api.jsをモックする
+jest.mock('./credit-tp-api');
 
 describe('credit-tp', () => {
 	describe('default rendering', () => {
@@ -331,5 +335,255 @@ describe('credit-tp', () => {
 					.toBe('Buy');
 			});
 		});
+	});
+
+	describe('validation check', () => {
+		let $root;
+		let $primaryAccountNumberField;
+		let $expirationDateField;
+		let $paymentBtnButton;
+
+		beforeEach(() => {
+			document.body.innerHTML = `
+				<div id="sunarch-credit"
+					base-url="http://localhost/test"
+					payment-id="test-payment-id"
+					payment-signature="test-payment-signature"
+				></div>
+			`;
+
+			render();
+
+			$root = document.querySelector('#sunarch-credit');
+			$primaryAccountNumberField = document.querySelector('#sunarch-credit-primary-account-number-field-id');
+			$expirationDateField = document.querySelector('#sunarch-credit-expiration-date-field-id');
+			$paymentBtnButton = document.querySelector('#sunarch-credit-payment-btn-button-id');
+		});
+
+		describe('invalid primary account number', () => {
+			beforeEach(() => {
+				$primaryAccountNumberField.value = 'invalid';
+				$expirationDateField.value = '0122';
+				$paymentBtnButton.click();
+			});
+
+			it('sunarch-bg-warning class added', () => {
+				expect($primaryAccountNumberField.classList.contains('sunarch-bg-warning')).toBe(true);
+			});
+
+			it('credit-tp-api not called', () => {
+				expect(callApi.mock.calls.length).toBe(0);
+			});
+		});
+
+		describe('invalid expiration date', () => {
+			beforeEach(() => {
+				$primaryAccountNumberField.value = '12345678901234';
+				$expirationDateField.value = 'invalid';
+				$paymentBtnButton.click();
+			});
+
+			it('sunarch-bg-warning class added', () => {
+				expect($expirationDateField.classList.contains('sunarch-bg-warning')).toBe(true);
+			});
+
+			it('credit-tp-api not called', () => {
+				expect(callApi.mock.calls.length).toBe(0);
+			});
+		});
+
+		describe('valid all', () => {
+			beforeEach(() => {
+				callApi.mockImplementation(() => new Promise((resolve, reject) => {
+					resolve({
+						status: 'OK',
+						processing_time: 10
+					});
+				}));
+
+				$primaryAccountNumberField.value = '12345678901234';
+				$expirationDateField.value = '0122';
+				$paymentBtnButton.click();
+			});
+
+			afterEach(() => {
+				callApi.mockClear();
+			});
+
+			it('credit-tp-api called', () => {
+				expect(callApi).toHaveBeenCalledTimes(1);
+				expect(callApi).toHaveBeenCalledWith(
+					'http://localhost/test/payment',
+					{
+						payment_id: 'test-payment-id',
+						ephemeral_key: 'test-payment-signature',
+						primary_account_number: '12345678901234',
+						expiration_date: '0122'
+					}
+				);
+			});
+		});
+	});
+	
+	describe('events', () => {
+		let $root;
+		let $primaryAccountNumberField;
+		let $expirationDateField;
+		let $paymentBtnButton;
+		let preprocessingHandler;
+		let successHandler;
+		let pendingHandler;
+		let errorHandler;
+		let completeHandler;
+
+		beforeEach(() => {
+			document.body.innerHTML = `
+				<div id="sunarch-credit"
+					base-url="http://localhost/test"
+					payment-id="test-payment-id"
+					payment-signature="test-payment-signature"
+				></div>
+			`;
+
+			render();
+
+			$root = document.querySelector('#sunarch-credit');
+			$primaryAccountNumberField = document.querySelector('#sunarch-credit-primary-account-number-field-id');
+			$expirationDateField = document.querySelector('#sunarch-credit-expiration-date-field-id');
+			$paymentBtnButton = document.querySelector('#sunarch-credit-payment-btn-button-id');
+
+			$primaryAccountNumberField.value = '12345678901234';
+			$expirationDateField.value = '0122';
+
+			preprocessingHandler = jest.fn();
+			successHandler = jest.fn();
+			pendingHandler = jest.fn();
+			errorHandler = jest.fn();
+			completeHandler = jest.fn();
+
+			$root.addEventListener('preprocessing', preprocessingHandler);
+			$root.addEventListener('success', successHandler);
+			$root.addEventListener('pending', pendingHandler);
+			$root.addEventListener('error', errorHandler);
+			$root.addEventListener('complete', completeHandler);
+		});
+
+		describe('api returns OK', () => {
+			beforeEach(() => {
+				callApi.mockImplementation(() => new Promise((resolve, reject) => {
+					resolve({
+						status: 'OK',
+						processing_time: 10
+					});
+				}));
+				$paymentBtnButton.click();
+			});
+
+			afterEach(() => {
+				callApi.mockClear();
+			});
+
+			it('preprocessing event occurred', () => {
+				expect(preprocessingHandler).toHaveBeenCalledTimes(1);
+			});
+
+			it('success event occurred', () => {
+				expect(successHandler).toHaveBeenCalledTimes(1);
+				expect(successHandler.mock.calls[0][0].detail).toEqual({
+					processing_time: 10
+				})
+			});
+
+			it('complete event occurred', () => {
+				expect(completeHandler).toHaveBeenCalledTimes(1);
+			});
+		});
+
+		describe('api returns PENDING', () => {
+			beforeEach(() => {
+				callApi.mockImplementation(() => new Promise((resolve, reject) => {
+					resolve({
+						status: 'PENDING',
+						processing_time: 10
+					});
+				}));
+				$paymentBtnButton.click();
+			});
+
+			afterEach(() => {
+				callApi.mockClear();
+			});
+
+			it('preprocessing event occurred', () => {
+				expect(preprocessingHandler).toHaveBeenCalledTimes(1);
+			});
+
+			it('pending event occurred', () => {
+				expect(pendingHandler).toHaveBeenCalledTimes(1);
+				expect(pendingHandler.mock.calls[0][0].detail).toEqual({
+					processing_time: 10
+				});
+			});
+
+			it('complete event occurred', () => {
+				expect(completeHandler).toHaveBeenCalledTimes(1);
+			});
+		});
+
+		describe('api returns ERROR', () => {
+			beforeEach(() => {
+				callApi.mockImplementation(() => new Promise((resolve, reject) => {
+					resolve({
+						status: 'ERROR',
+						processing_time: 10
+					});
+				}));
+				$paymentBtnButton.click();
+			});
+
+			afterEach(() => {
+				callApi.mockClear();
+			});
+
+			it('preprocessing event occurred', () => {
+				expect(preprocessingHandler).toHaveBeenCalledTimes(1);
+			});
+
+			it('error event occurred', () => {
+				expect(errorHandler).toHaveBeenCalledTimes(1);
+				expect(errorHandler.mock.calls[0][0].detail).toEqual({
+					processing_time: 10
+				});
+			});
+
+			it('complete event occurred', () => {
+				expect(completeHandler).toHaveBeenCalledTimes(1);
+			});
+		});
+
+		describe('api throws Error', () => {
+			beforeEach(() => {
+				callApi.mockImplementation(() => new Promise((resolve, reject) => {
+					reject(new Error());
+				}));
+				$paymentBtnButton.click();
+			});
+
+			afterEach(() => {
+				callApi.mockClear();
+			});
+
+			it('preprocessing event occurred', () => {
+				expect(preprocessingHandler).toHaveBeenCalledTimes(1);
+			});
+
+			it('error event occurred', () => {
+				expect(errorHandler).toHaveBeenCalledTimes(1);
+			});
+
+			it('complete event occurred', () => {
+				expect(completeHandler).toHaveBeenCalledTimes(1);
+			});
+		})
 	});
 });

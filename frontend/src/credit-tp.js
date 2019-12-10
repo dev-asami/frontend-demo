@@ -109,14 +109,13 @@ export default function render() {
 			"expiration_date":expdate
 		};
 		callApi(`${baseUrl}/payment`, req)
-		.then(function(response) {
-			return response.json();
-		})
 		.then(function(myJson) {
 			if(myJson.status == "OK"){
 				console.log("OK: " + JSON.stringify(myJson));
 				// event
-				var event = new CustomEvent("success", {detail: {processingTime: myJson.processing_time}});
+				var event = new CustomEvent("success", {detail: {
+					processing_time: myJson.processing_time
+				}});
 				template.dispatchEvent(event);
 
 			}else if(myJson.status == "PENDING"){
