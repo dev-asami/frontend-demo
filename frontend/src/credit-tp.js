@@ -7,7 +7,7 @@ import Cleave from 'cleave.js';
 // デフォルトのスタイル指定を読み込む
 import './credit-tp.css';
 
-(function() {
+export default function render() {
 
 	const template = document.getElementById("sunarch-credit");
 	const primaryAccountNumberClass = template.getAttribute("primary-account-number-class") || "sunarch-credit-css-primary-account-number";
@@ -149,4 +149,4 @@ import './credit-tp.css';
 		})
 	});
 
-})()
+}
