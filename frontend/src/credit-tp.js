@@ -26,9 +26,9 @@ export default function render() {
 	const expirationDateFieldPlaceholder = template.getAttribute("expiration-date-field-placeholder") || "MM / 'YY";
 
 	const securityCodeClass = template.getAttribute("security-code-class") || "sunarch-credit-css-security-code";
-	const securityCodeLabelClass = template.getAttribute("security-code-label-class") || "sunarch-credit-css-expiration-date-label";
+	const securityCodeLabelClass = template.getAttribute("security-code-label-class") || "sunarch-credit-css-security-code-label";
 	const securityCodeLabelText = template.getAttribute("security-code-label-text") || "セキュリティコード";
-	const securityCodeFieldClass = template.getAttribute("security-code-field-class") || "sunarch-credit-css-expiration-date-field";
+	const securityCodeFieldClass = template.getAttribute("security-code-field-class") || "sunarch-credit-css-security-code-field";
 	const securityCodeFieldPlaceholder = template.getAttribute("security-code-field-placeholder") || "";
 
 	const paymentBtnClass = template.getAttribute("payment-btn-class") || "sunarch-credit-css-payment-btn";
@@ -44,13 +44,13 @@ export default function render() {
 
 	const expirationDateTemplate = `
 <div class="${expirationDateClass}">
-	<label for="sunarch-credit-expiration-date-field-id" class="${expirationDateLabelClass}">${expirationDateLabelText}</span>
+	<label for="sunarch-credit-expiration-date-field-id" class="${expirationDateLabelClass}">${expirationDateLabelText}</label>
 	<input type="text" class="${expirationDateFieldClass}" placeholder="${expirationDateFieldPlaceholder}" id="sunarch-credit-expiration-date-field-id" />
 </div>`;
 
 	const securityCodeTemplate = `
 <div class="${securityCodeClass}">
-	<label for="sunarch-credit-security-code-field-id" class="${securityCodeLabelClass}">${securityCodeLabelText}</span>
+	<label for="sunarch-credit-security-code-field-id" class="${securityCodeLabelClass}">${securityCodeLabelText}</label>
 	<input type="text" class="${securityCodeFieldClass}" placeholder="${securityCodeFieldPlaceholder}" id="sunarch-credit-security-code-field-id" />
 </div>`;
 
