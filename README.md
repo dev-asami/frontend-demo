@@ -152,6 +152,12 @@ npm install --save whatwg-fetch
 npm install --save cleave.js
 ```
 
+##### JSテスト関連ライブラリ
+```
+npm install --save-dev jest
+npm install --save-dev babel-plugin-transform-es2015-modules-commonjs
+```
+
 ##### Maven build
 
 POM.xmlにフロントエンド用のプラグインを追記する
