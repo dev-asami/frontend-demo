@@ -28,6 +28,21 @@ npm run build:watch
 自動でwebpackによるビルドが走り、`target/classes/static`配下にファイルが出力されます。
 あとは、通常のJava開発と同じように、Eclipse等からサーバーサイドを起動して、動作確認できます。
 
+## テスト方法
+
+以下のコマンドで、Jestによるテストを実行できます。
+
+```
+npm run test
+```
+
+また、以下のコマンドで、Jestがwatchモードで起動します。
+この状態でソースを修正すると、自動で再テストが実行されます。
+
+```
+npm run test:watch
+```
+
 ## Mavenでのビルド方法
 
 Mavenには、[frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin)を追加することで、

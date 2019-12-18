@@ -6,7 +6,9 @@
   "scripts": {
     "build": "webpack --config ./config/webpack.dev.js",
     "build:watch": "webpack --watch --config ./config/webpack.dev.js",
-    "build:prod": "webpack --config ./config/webpack.prod.js"
+    "build:prod": "webpack --config ./config/webpack.prod.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +17,9 @@
     "@babel/core": "^7.7.5",
     "@babel/preset-env": "^7.7.6",
     "babel-loader": "^8.0.6",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "css-loader": "^3.3.0",
+    "jest": "^24.9.0",
     "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",

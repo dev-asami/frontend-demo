@@ -1,5 +1,4 @@
 import 'es6-promise/auto';
-import 'whatwg-fetch';
 import 'custom-event-polyfill';
 import Cleave from 'cleave.js';
 
@@ -7,7 +6,10 @@ import Cleave from 'cleave.js';
 // デフォルトのスタイル指定を読み込む
 import './credit-tp.css';
 
-(function() {
+// API呼び出し用関数
+import callApi from './credit-tp-api';
+
+export default function render() {
 
 	const template = document.getElementById("sunarch-credit");
 	const primaryAccountNumberClass = template.getAttribute("primary-account-number-class") || "sunarch-credit-css-primary-account-number";
@@ -24,9 +26,9 @@ import './credit-tp.css';
 	const expirationDateFieldPlaceholder = template.getAttribute("expiration-date-field-placeholder") || "MM / 'YY";
 
 	const securityCodeClass = template.getAttribute("security-code-class") || "sunarch-credit-css-security-code";
-	const securityCodeLabelClass = template.getAttribute("security-code-label-class") || "sunarch-credit-css-expiration-date-label";
+	const securityCodeLabelClass = template.getAttribute("security-code-label-class") || "sunarch-credit-css-security-code-label";
 	const securityCodeLabelText = template.getAttribute("security-code-label-text") || "セキュリティコード";
-	const securityCodeFieldClass = template.getAttribute("security-code-field-class") || "sunarch-credit-css-expiration-date-field";
+	const securityCodeFieldClass = template.getAttribute("security-code-field-class") || "sunarch-credit-css-security-code-field";
 	const securityCodeFieldPlaceholder = template.getAttribute("security-code-field-placeholder") || "";
 
 	const paymentBtnClass = template.getAttribute("payment-btn-class") || "sunarch-credit-css-payment-btn";
@@ -42,13 +44,13 @@ import './credit-tp.css';
 
 	const expirationDateTemplate = `
 <div class="${expirationDateClass}">
-	<label for="sunarch-credit-expiration-date-field-id" class="${expirationDateLabelClass}">${expirationDateLabelText}</span>
+	<label for="sunarch-credit-expiration-date-field-id" class="${expirationDateLabelClass}">${expirationDateLabelText}</label>
 	<input type="text" class="${expirationDateFieldClass}" placeholder="${expirationDateFieldPlaceholder}" id="sunarch-credit-expiration-date-field-id" />
 </div>`;
 
 	const securityCodeTemplate = `
 <div class="${securityCodeClass}">
-	<label for="sunarch-credit-security-code-field-id" class="${securityCodeLabelClass}">${securityCodeLabelText}</span>
+	<label for="sunarch-credit-security-code-field-id" class="${securityCodeLabelClass}">${securityCodeLabelText}</label>
 	<input type="text" class="${securityCodeFieldClass}" placeholder="${securityCodeFieldPlaceholder}" id="sunarch-credit-security-code-field-id" />
 </div>`;
 
@@ -106,22 +108,14 @@ import './credit-tp.css';
 			"primary_account_number":pan,
 			"expiration_date":expdate
 		};
-		fetch(baseUrl + "/payment", {
-			method: "POST",
-			redirect: "error",
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(req)
-		})
-		.then(function(response) {
-			return response.json();
-		})
+		callApi(`${baseUrl}/payment`, req)
 		.then(function(myJson) {
 			if(myJson.status == "OK"){
 				console.log("OK: " + JSON.stringify(myJson));
 				// event
-				var event = new CustomEvent("success", {detail: {processingTime: myJson.processing_time}});
+				var event = new CustomEvent("success", {detail: {
+					processing_time: myJson.processing_time
+				}});
 				template.dispatchEvent(event);
 
 			}else if(myJson.status == "PENDING"){
@@ -149,4 +143,4 @@ import './credit-tp.css';
 		})
 	});
 
-})()
+}

@@ -93,6 +93,16 @@
 							<arguments>run build:prod</arguments>
 						</configuration>
 					</execution>
+					<execution>
+						<id>npm test</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>test</phase>
+						<configuration>
+							<arguments>run test</arguments>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
